@@ -1,17 +1,16 @@
 const mongoose = require("mongoose");
-const connectionString = process.env.MONGO_DB_URI;
 
 // Conexion a mongo
-mongoose
-  .connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  })
-  .then(() => {
-    console.log("Database connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+
+mongoose.connection.on("error", (err) => {
+  console.log("Error de conexión a MongoDB", err);
+  process.exit(1);
+});
+
+mongoose.connection.once("open", () => {
+  console.log("Conectado a MongoDB en la BD:", mongoose.connection.name);
+});
+
+mongoose.connect(process.env.MONGO_DB_URI); // si no existe la crea
+
+module.exports = mongoose.connection;
