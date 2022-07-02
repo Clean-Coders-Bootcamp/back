@@ -4,10 +4,10 @@ const bcrypt = require("bcrypt");
 
 // CREO EL ESQUEMA
 const userSchema = mongoose.Schema({
-  //   name: String,
-  //   surname: String,
+  name: String,
+  surname: String,
   email: { type: String, unique: true },
-  //   nickname: String,
+  nickname: String,
   password: String,
 });
 // METODO ESTATICO

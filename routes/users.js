@@ -10,6 +10,7 @@ router.get("/", function (req, res, next) {
 router.post("/api/v1/users", async (req, res, next) => {
   try {
     const userData = req.body;
+    console.log(userData);
     const user = new User(userData);
     const savedUser = await user.save();
     res.status(201).json({ result: savedUser });
