@@ -5,8 +5,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
 require("./data/connect_mongodb");
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+// const LoginController = require("./controllers/LoginController");
+const jwtAuth = require("./data/jwtAuth");
 
 var app = express();
 
@@ -25,9 +28,6 @@ app.use(express.static(path.join(__dirname, "public")));
  */
 
 app.use("/", indexRouter);
-app.get("/api/v1/user", (req, res, next) => {
-  res.send({ message: "Hola Mundo!" });
-});
 
 // app.use("/users", usersRouter);
 
