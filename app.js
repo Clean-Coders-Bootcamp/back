@@ -7,7 +7,9 @@ require("dotenv").config();
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var articulesRouter = require("./routes/articules")
 const jwtAuth = require("./data/jwtAuth");
+var cors = require('cors')
 
 var app = express();
 require("./data/connect_mongodb");
@@ -23,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/login", loginController.index);
+app.use(cors())
 
 /**
  * API v1 routes
@@ -32,6 +35,8 @@ app.use("/", indexRouter);
 // app.use("/", usersRouter);
 
 // app.use("/users", usersRouter);
+
+app.use("/api/v1/articules", articulesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
