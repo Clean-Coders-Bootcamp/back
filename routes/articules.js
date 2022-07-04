@@ -3,11 +3,16 @@ const Articule = require("../models/Articule");
 var router = express.Router();
 
 /* GET articules. */
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+router.get("/", async (req, res, next) => {
+  try{
+    const articules = await Articule.list();
+    res.json({result: articules});
+  } catch(err){
+    next(err);
+  }
 });
 
-router.post("/api/v1/articules", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const articuleData = req.body;
     const articule = new Articule(articuleData);

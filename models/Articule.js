@@ -8,6 +8,13 @@ const articuleSchema = mongoose.Schema({
   author: String,
 });
 
+// Creamos metodo estatico
+
+articuleSchema.statics.list = function(){
+  const query = Articule.find();
+  return query.exec();
+}
+
 // CREO MODELO
 const Articule = mongoose.model("Articule", articuleSchema);
 
