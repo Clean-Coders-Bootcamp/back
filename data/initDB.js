@@ -13,6 +13,7 @@ import dbConnection from "./connect_mongodb.js";
 import Welldone from "./models/Welldone";
 import User from "./models/User";
 import { resolve } from "path";
+import Articule from "../models/Articule.js";
 
 async function main() {
   // inicializar productos
@@ -20,6 +21,9 @@ async function main() {
 
   // incializar usuarios
   await initUser();
+
+  // inicializar articulos
+  await initArticules();
 
   // desconectar la BD
   dbConnection.close();
@@ -42,6 +46,32 @@ async function initUser() {
     },
   ]);
   console.log(`Creados ${usuarios.length} usuarios`);
+}
+
+async function initArticules() {
+  //borrar los usuarios existentes
+  // const deleted = await Usuario.deleteMany();
+  // console.log(`Eliminados ${deleted.deletedCount} usuarios`);
+
+  //crear usuarios
+  const articules = await Articule.insertMany([
+    {
+      title: "los osos polares",
+      content: "los osos polares son blancos, les gusta el frio y comen pescado.",
+      author: "usuario1"
+    },
+   {
+      title: "los planetas",
+      content: "los planetas son grandes objetos que se encuentran en el espacio, la mayoria son rocosos otros son gaseosos.",
+      author: "usuario2"
+    },
+     {
+      title: "el ejercicio",
+      content: "el ejercicio es una actividad fisica muy importante que nos ayuda a estar sanos en cuerpo y mente.",
+      author: "usuario3"
+    },
+  ]);
+  console.log(`Creados ${articules.length} articulos`);
 }
 
 main().catch((err) => console.log("Hubo un error", err));
