@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var articulesRouter = require("./routes/articules")
 const jwtAuth = require("./data/jwtAuth");
+var cors = require('cors')
 
 var app = express();
 require("./data/connect_mongodb");
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/login", loginController.index);
+app.use(cors())
 
 /**
  * API v1 routes
