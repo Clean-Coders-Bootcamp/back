@@ -1,15 +1,17 @@
 "use strict";
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const uniqueValidator = require("mongoose-unique-validator");
 
 // CREO EL ESQUEMA
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: String,
   surname: String,
-  email: { type: String, unique: true },
-  nickname: String,
-  password: String,
+  email: { type: String, unique: true, required: true },
+  nickname: { type: String, unique: true },
+  password: { type: String, required: true },
 });
+userSchema.plugin(uniqueValidator);
 // METODO ESTATICO
 userSchema.statics.hashPassword = function (password) {
   return bcrypt.hash(password, 7);
