@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   // Validaciones de login
-
+  const nickName = await User.findOne({ nickname: req.body.nickname });
+  if (!nickName)
+    return res.status(400).json({ error: "Nombre de usuario no encontrado" });
   // Validaciond e existencia
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
