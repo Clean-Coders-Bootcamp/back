@@ -1,5 +1,5 @@
 var express = require("express");
-const jwtAuth = require("../data/jwtAuth");
+// const jwtAuth = require("../middleware/validate-token");
 var router = express.Router();
 const User = require("../models/User");
 

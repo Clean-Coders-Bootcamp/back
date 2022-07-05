@@ -8,9 +8,10 @@ var cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var articulesRouter = require("./routes/articules");
-const jwtAuth = require("./data/jwtAuth");
+const jwtAuth = require("./middleware/validate-token");
 const authRoutes = require("./routes/auth");
 const register = require("./routes/register");
+const dashboardRoutes = require("./routes/dashboard");
 var app = express();
 require("./data/connect_mongodb");
 // view engine setup
@@ -30,7 +31,7 @@ app.use(cors());
 /**
  * API v1 routes
  */
-
+app.use("/api/dashboard", jwtAuth, dashboardRoutes);
 app.use("/", indexRouter);
 app.use("/api/v1/users", register);
 app.use("/api/v1/auth", authRoutes);
