@@ -16,7 +16,7 @@ var router = express.Router();
 // });
 
 // Otra foirma de hacerlo
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   // Encripta contraseña
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(req.body.password, salt);
@@ -37,6 +37,13 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error });
   }
+});
+
+router.delete("/:id", (req, res, next) => {
+  const { id } = Number(req.params);
+  User.findOneAndDelete(id)
+    .then(() => res.status(204).end())
+    .catch((error) => next(error));
 });
 
 module.exports = router;

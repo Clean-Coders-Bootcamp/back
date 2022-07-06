@@ -32,7 +32,8 @@ app.use(cors());
  */
 // app.use("/api/dashboard", jwtAuth, dashboardRoutes);
 app.use("/", indexRouter);
-app.use("/api/v1/users", registerRoutes);
+// app.use("/api/v1/user/:userId", registerRoutes);
+app.use("/api/v1/user", registerRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/articules", articulesRouter);
 
