@@ -12,14 +12,6 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 userSchema.plugin(uniqueValidator);
-// METODO ESTATICO
-userSchema.statics.hashPassword = function (password) {
-  return bcrypt.hash(password, 7);
-};
-// METODO DE INSTANCIA
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
 
 // CREO MODELO
 const User = mongoose.model("User", userSchema);
