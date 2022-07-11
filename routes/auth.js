@@ -6,15 +6,20 @@ const jwt = require("jsonwebtoken");
 
 router.post("/", async (req, res) => {
   // Validaciones de login
-  const nickName = await User.findOne({ nickname: req.body.nickname });
-  if (!nickName)
+  const userName = await User.findOne({ username: req.body.username });
+  if (!userName)
     return res.status(400).json({ error: "Nombre de usuario no encontrado" });
   // Validaciond e existencia
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).json({ error: "Usuario no encontrado" });
+  const emailUser = await User.findOne({ email: req.body.email });
+  if (!emailUser)
+    return res.status(400).json({ error: "Usuario no encontrado" });
 
   // Validacion de password en la base de datos
-  const validPassword = await User.findOne({ password: req.body.password });
+  // const validPassword = await User.findOne({ password: req.body.password });
+  const validPassword = await bcrypt.compare(
+    req.body.password,
+    userName.password
+  );
   if (!validPassword)
     return res.status(400).json({ error: "Constraseña invalida" });
 
@@ -25,8 +30,8 @@ router.post("/", async (req, res) => {
 
   const token = jwt.sign(
     {
-      name: user.name,
-      id: user._id,
+      name: userName.name,
+      id: userName._id,
     },
     process.env.JWT_SECRET
   );
