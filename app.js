@@ -4,14 +4,19 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
+var cors = require("cors");
 
 var indexRouter = require("./routes/index");
-var articulesRouter = require("./routes/articules")
-const jwtAuth = require("./data/jwtAuth");
-var cors = require('cors')
-
+var articulesRouter = require("./routes/articules");
+const jwtAuth = require("./middleware/validate-token");
+const authRoutes = require("./routes/auth");
+const registerRoutes = require("./routes/register");
+// const dashboardRoutes = require("./routes/dashboard");
 var app = express();
 require("./data/connect_mongodb");
+
+// view engine setup
+
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -21,14 +26,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.get("/login", loginController.index);
-app.use(cors())
+app.use(cors());
 
 /**
  * API v1 routes
  */
-
+// app.use("/api/dashboard", jwtAuth, dashboardRoutes);
 app.use("/", indexRouter);
+// app.use("/api/v1/user/:userId", registerRoutes);
+app.use("/api/v1/user", registerRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/articules", articulesRouter);
 
