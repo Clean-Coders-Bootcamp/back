@@ -1,15 +1,16 @@
 "use strict";
-const mongoose = require("mongoose");
+const { Schema, mongoose } = require("mongoose");
 const bcrypt = require("bcrypt");
 const uniqueValidator = require("mongoose-unique-validator");
 
 // CREO EL ESQUEMA
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: String,
   surname: String,
   email: { type: String, unique: true, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  blog: [{ type: Schema.Types.ObjectId, ref: "Articule" }],
 });
 userSchema.plugin(uniqueValidator);
 

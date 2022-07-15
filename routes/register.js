@@ -6,20 +6,20 @@ var router = express.Router();
 
 router.post("/", async (req, res, next) => {
   // Encripta contraseña
-  // const salt = await bcrypt.genSalt(10);
-  // const password = await bcrypt.hash(req.body.password, salt);
+  const salt = await bcrypt.genSalt(10);
+  const password = await bcrypt.hash(req.body.password, salt);
 
   const user = new User({
     name: req.body.name,
     surname: req.body.surname,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password,
+    password: password,
   });
   try {
     const savedUser = await user.save();
     res.json({
-      savedUser,
+      data: savedUser,
     });
   } catch (error) {
     res.status(400).json({ error });

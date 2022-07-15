@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   if (!validPassword)
     return res.status(400).json({ error: "Invalid password" });
 
-  const token = jwt.sign(
+  const accessToken = jwt.sign(
     {
       name: userName.name,
       id: userName._id,
@@ -27,10 +27,8 @@ router.post("/", async (req, res) => {
     process.env.JWT_SECRET
   );
 
-  res.header("auth-token", token).json({
-    error: null,
-    data: { token },
-    message: "Welcome",
+  res.header("auth-token", accessToken).json({
+    accessToken,
   });
 });
 
