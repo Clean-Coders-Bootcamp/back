@@ -6,7 +6,7 @@ const articuleSchema = mongoose.Schema({
   title: String,
   content: String,
   author: String,
-  date: String
+  date: String,
   user: [
     {
       type: mongoose.Schema.Types.ObjectId,
