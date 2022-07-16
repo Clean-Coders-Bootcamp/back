@@ -6,6 +6,7 @@ const articuleSchema = mongoose.Schema({
   title: String,
   content: String,
   author: String,
+  date: String
 });
 
 // Creamos metodo estatico
