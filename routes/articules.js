@@ -15,6 +15,8 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const articuleData = req.body;
+    const date = new Date().toString()
+    articuleData.date = date;
     const articule = new Articule(articuleData);
     const savedArticule = await articule.save();
     res.status(201).json({ result: savedArticule });
