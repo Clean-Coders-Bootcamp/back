@@ -12,7 +12,7 @@ var articulesRouter = require("./routes/articules.js");
 
 const jwtAuth = require("./middleware/validate-token");
 const authRoutes = require("./routes/auth");
-const registerRoutes = require("./routes/register");
+const usersRoutes = require("./routes/users");
 // const dashboardRoutes = require("./routes/dashboard");
 var app = express();
 require("./data/connect_mongodb");
@@ -35,7 +35,7 @@ app.use(cors());
 // app.use("/api/dashboard", jwtAuth, dashboardRoutes);
 app.use("/", indexRouter);
 
-app.use("/api/v1/user", registerRoutes);
+app.use("/api/v1/users", usersRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/articules", articulesRouter);
 
