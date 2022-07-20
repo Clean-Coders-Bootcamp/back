@@ -21,8 +21,27 @@ router.post("/", async (req, res, next) => {
     res.json({
       data: savedUser,
     });
-  } catch (error) {
-    res.status(400).json({ error });
+  } catch (err) {
+    res.status(400, "Invalid email or username").send({ err });
+  }
+});
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const users = await User.findOne({ _id: id });
+    res.json(users);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/", async (req, res, next) => {
+  try {
+    const users = await User.list();
+    res.json({ result: users });
+  } catch (err) {
+    next(err);
   }
 });
 
@@ -30,10 +49,10 @@ router.delete("/:id", (req, res, next) => {
   const { id } = Number(req.params);
   User.findOneAndDelete(id)
     .then(() => res.status(204).end())
-    .catch((error) => next(error));
+    .catch((err) => next(err));
 });
 
-router.post("/modify-client", function (req, res) {
+router.put("/", function (req, res) {
   let body = req.body;
   User.updateOne(
     { _id: body._id },
