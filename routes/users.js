@@ -52,12 +52,16 @@ router.delete("/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-router.put("/", function (req, res) {
+router.put("/", async (req, res) => {
   let body = req.body;
+  const salt = await bcrypt.genSalt(10);
+  const password = await bcrypt.hash(req.body.password, salt);
+  console.log("bodyy", body);
   User.updateOne(
     { _id: body._id },
     {
       $set: req.body,
+      password,
     },
     function (err, info) {
       if (err) {
