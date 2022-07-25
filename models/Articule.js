@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 // CREO EL ESQUEMA
 const articuleSchema = mongoose.Schema({
-  title: String,
-  content: String,
+  title: { type: String, required: true },
+  content: { type: String, required: true },
   photo: String,
   date: String,
   user: [

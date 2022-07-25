@@ -8,6 +8,7 @@ const path = require("path");
 const { dirname, resolve } = require("path");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log(file)
     cb(null, "./public/images");
   },
   filename: (req, file, cb) => {
@@ -18,7 +19,16 @@ const storage = multer.diskStorage({
     );
   },
 });
-const upload = multer({storage});
+
+const upload = multer({storage, fileFilter: (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    }
+  }
+});
 
 /* GET articules. */
 router.get("/", async (req, res, next) => {
@@ -32,10 +42,10 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", upload.single("photo"), async (req, res, next) => {
   try {
-    console.log(req.file)
     const articuleData = req.body;
-    articuleData.photo = "." + req.file.path.split("public")[1];
-    const date = new Date().toString()
+    const photo = req.file?.path.split("public")[1];
+    articuleData.photo = photo 
+    const date = new Date()
     articuleData.date = date;
     const articule = new Articule(articuleData);
     const savedArticule = await articule.save();
