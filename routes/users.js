@@ -52,32 +52,44 @@ router.delete("/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-router.put("/", async (req, res) => {
+router.put("/", async (req, res, next) => {
   let body = req.body;
-  const salt = await bcrypt.genSalt(10);
-  const password = await bcrypt.hash(req.body.password, salt);
-  console.log("bodyy", body);
-  User.updateOne(
-    { _id: body._id },
-    {
-      $set: req.body,
-      password,
-    },
-    function (err, info) {
-      if (err) {
-        res.json({
-          result: false,
-          msg: "Could not modify client",
-          err,
-        });
-      } else {
-        res.json({
-          result: true,
-          info: info,
-        });
-      }
+  console.log("BODY", body);
+  try {
+    if (body.password) {
+      const salt = await bcrypt.genSalt(10);
+      body.password = await bcrypt.hash(body.password, salt);
     }
-  );
+
+    User.updateOne(
+      { _id: body._id },
+      {
+        $set: req.body,
+      },
+
+      function (err, info) {
+        if (err) {
+          res.json({
+            result: false,
+            msg: "Could not modify user",
+            err,
+          });
+        } else {
+          res.json({
+            result: true,
+            msg: "User edited",
+            info: info,
+          });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(400).json({
+      result: false,
+      msg: "Could not modify user",
+      err: error.message,
+    });
+  }
 });
 
 module.exports = router;
