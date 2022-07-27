@@ -46,8 +46,9 @@ router.get("/", async (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-  const { id } = Number(req.params);
-  User.findOneAndDelete(id)
+  const { id } = req.params;
+  console.log("delete:", id);
+  User.findOneAndDelete({ _id: id })
     .then(() => res.status(204).end())
     .catch((error) => next(error));
 });
